@@ -1,0 +1,453 @@
+セグメントツリー O(log n)
+http://kagamiz.hatenablog.com/entry/2012/12/18/220849
+----------------------------------------------
+
+
+
+
+
+
+#define def 0
+template<class V, int NV> struct SegTree {
+    V comp(V l, V r) { return l + r; };
+    vector<V> val; SegTree() { val = vector<V>(NV * 2, def); }
+    V get(int l, int r) { //[l,r]
+        if (l > r) return def;
+        l += NV; r += NV + 1; V ret = def;
+        while (l < r) { if (l & 1) ret = comp(ret, val[l++]); if (r & 1) ret = comp(ret, val[--r]); l /= 2; r /= 2; }
+        return ret;
+    }
+    void update(int i, V v) { i += NV; val[i] = v; while (i>1) i >>= 1, val[i] = comp(val[i * 2], val[i * 2 + 1]); }
+    void add(int i, V v) { update(i, val[i + NV] + v); }
+};
+
+
+
+
+
+
+
+
+template<class V, int NV> struct ShiftSegTree {
+    SegTree<V, NV> st;
+    int NM, base;
+    ShiftSegTree(int _NM) : NM(_NM), base(0) {} // NMを法としてシフトする
+
+    void shift(int x) { // 全ての要素をx分右へシフトする
+        base -= x % NM;
+        if (base < 0) base += NM;
+        base %= NM;
+    }
+    V get(int l, int r) { //[l,r]
+        l += base, r += base;
+        if (NM <= l) return st.get(l % NM, r % NM);
+        if (r < NM) return st.get(l, r);
+        return st.comp(st.get(l, NM - 1), st.get(0, r % NM));
+    }
+    void update(int i, V v) {
+        st.update((i + base) % NM, v);
+    }
+    void add(int i, V v) {
+        st.add((i + base) % NM, v);
+    }
+    void print() {
+        rep(i, 0, NM) cout << get(i, i) << " ";
+        cout << endl;
+    }
+};
+
+
+
+
+
+
+
+
+半環
+#define INF 1LL<<60
+struct func {
+	// ax+b
+	long long a, b;
+	func(long long a = 0, long long b = -INF) : a(a), b(b) {}
+};
+
+func operator*(func x, func y) {
+	return func(x.a + y.a, max(x.b + y.a, y.b));
+}
+//-----------------------------------------------------------------
+template<class V, int NV> struct SegTree {
+	V comp(V l, V r) {
+		return l * r;
+	};
+	vector<V> val; SegTree() { val = vector<V>(NV * 2); }
+	V get(int x, int y, int l = 0, int r = NV, int k = 1) { // x<=i<y
+		if (r <= x || y <= l) return V();
+		if (x <= l && r <= y) return val[k];
+		auto A = get(x, y, l, (l + r) / 2, k * 2);
+		auto B = get(x, y, (l + r) / 2, r, k * 2 + 1);
+		return comp(A,B);
+	}
+	void update(int i, V v) { i += NV; val[i] = v; while (i>1) i >>= 1, val[i] = comp(val[i * 2],val[i * 2 + 1]); }
+};
+SegTree<func, 1 << 20> st;
+
+
+
+
+半環(行列)
+struct func {
+    Mat m;
+    func(){
+        m = Mat(4, Vec(4, 0));
+        m[0][0] = 1;
+        m[1][3] = 1;
+        m[2][3] = 1;
+        m[3][3] = 1;
+    }
+};
+
+func operator*(func left, func right) {
+    func res;
+    res.m = mulMatMat(left.m, right.m);
+    return res;
+}
+//-----------------------------------------------------------------
+template<class V, int NV> struct SegTree {
+    V comp(V l, V r) {
+        return r * l;
+    };
+    vector<V> val; SegTree() { val = vector<V>(NV * 2); }
+    V get(int x, int y, int l = 0, int r = NV, int k = 1) { // x<=i<y
+        if (r <= x || y <= l) return V();
+        if (x <= l && r <= y) return val[k];
+        auto A = get(x, y, l, (l + r) / 2, k * 2);
+        auto B = get(x, y, (l + r) / 2, r, k * 2 + 1);
+        return comp(A, B);
+    }
+    void update(int i, V v) { i += NV; val[i] = v; while (i>1) i >>= 1, val[i] = comp(val[i * 2], val[i * 2 + 1]); }
+};
+SegTree<func, 1 << 17> st;
+
+
+
+
+
+
+
+
+
+
+## RMQ（区画最小値）
+static V const def = (1LL<<31)-1;
+V comp(V l, V r) { return min(l, r); };
+
+## RMQ（区画最大値）
+static V const def = -(1LL << 60);
+static V const def = 0;
+V comp(V l, V r) { return max(l, r); };
+
+## RSQ（区画総和）
+static V const def = 0;
+V comp(V l, V r) { return (l+r); };
+
+------------ 注意！！！ -----------------
+NV = 1 << 20じゃないとバグる
+
+
+
+
+#define def -(1LL << 60)
+template<class V, int NV> class SegTree { // by kmjp
+public:
+	V comp(V l, V r) { return max(l, r); };
+
+	vector<V> val;
+	SegTree() { val = vector<V>(NV*2, def); }
+
+	V getval(int l, int r) { //[l,r]
+		l += NV; r += NV + 1;
+		V ret = def;
+		while (l < r) {
+			if (l & 1) ret = comp(ret, val[l++]);
+			if (r & 1) ret = comp(ret, val[--r]);
+			l /= 2; r /= 2;
+		}
+		return ret;
+	}
+	void update(int i, V v) {
+		i += NV;
+		val[i] = v;
+		while (i>1) i >>= 1, val[i] = comp(val[i * 2], val[i * 2 + 1]);
+	}
+};
+
+
+
+
+
+// 遅延seg木
+#define def 0
+template<class V, int NV> class StarrySkyTree { // by kmjp
+public:
+	V comp(V l, V r) { return max(l, r); };
+
+	vector<V> val, ma;
+	StarrySkyTree() {
+		val = vector<V>(NV * 2, def);
+		ma = vector<V>(NV * 2, def);
+	}
+
+	V getval(int x, int y, int l = 0, int r = NV, int k = 1) { // [x,y)
+		if (r <= x || y <= l) return def;
+		if (x <= l && r <= y) return ma[k];
+		auto a = comp(getval(x, y, l, (l + r) / 2, k * 2), getval(x, y, (l + r) / 2, r, k * 2 + 1));
+		a += val[k];
+		return a;
+	}
+	void update(int x, int y, V v, int l = 0, int r = NV, int k = 1) { // [x,y)
+		if (l >= r) return;
+		if (x <= l && r <= y) {
+			val[k] += v; ma[k] += v;
+		}
+		else if (l < y && x < r) {
+			update(x, y, v, l, (l + r) / 2, k * 2);
+			update(x, y, v, (l + r) / 2, r, k * 2 + 1);
+			ma[k] = comp(ma[k * 2], ma[k * 2 + 1]);
+			ma[k] += val[k];
+		}
+	}
+};
+
+
+
+
+
+// BIT
+template<class V, int ME> class BIT { // by kmjp
+public:
+	V bit[1 << ME], val[1 << ME];
+	V total(int e) { V s = 0; e++; while (e) s += bit[e - 1], e -= e&-e; return s; }
+	void add(int e, V v) { val[e++] += v; while (e <= 1 << ME) bit[e - 1] += v, e += e&-e; }
+	void set(int e, V v) { add(e, v - val[e]); }
+};
+
+
+
+
+
+
+
+// 区間set, 区間総和
+typedef long long ll;
+struct LazySegTreeAddSetSum { // 全部[l,r]
+
+    struct Data {
+        ll val, add, sum;bool valset;
+        ll calc_sum(int l, int r) { if (valset) return (val + add) * (r - l + 1); else return sum + add * (r - l + 1); }
+        void set_data(int x, int y) { val = x; add = 0; valset = true; }
+        Data() :val(0), add(0), sum(0), valset(false) {}
+    };
+
+    vector<Data> data; int seg_size;
+
+    LazySegTreeAddSetSum(int n) {
+        for (seg_size = 1; seg_size < n; seg_size *= 2);
+        data.assign(seg_size * 2, Data());
+    }
+
+    ll set(int a, int b, ll x, int l = 0, int r = -1, int k = 0) {
+        if (r == -1) r = seg_size - 1;
+
+        if (a <= l && r <= b) { data[k].set_data(x, 0); return data[k].calc_sum(l, r); }
+        if (r < a || b < l) return data[k].calc_sum(l, r);
+
+        if (data[k].valset) {
+            data[k * 2 + 1].set_data(data[k].val, data[k].add);
+            data[k * 2 + 2].set_data(data[k].val, data[k].add);
+        }
+
+        data[k].add = 0; data[k].valset = false;
+        data[k].sum = set(a, b, x, l, (l + r) / 2, k * 2 + 1) + set(a, b, x, (l + r) / 2 + 1, r, k * 2 + 2);
+        return data[k].calc_sum(l, r);
+    }
+
+    ll add(int a, int b, ll x, int l = 0, int r = -1, int k = 0) {
+        if (r == -1) r = seg_size - 1;
+        if (a <= l && r <= b) { data[k].add += x; return data[k].calc_sum(l, r); }
+        if (r < a || b < l) return 0;
+
+        if (data[k].valset) {
+            data[k * 2 + 1].set_data(data[k].val, 0);
+            data[k * 2 + 2].set_data(data[k].val, 0);
+            data[k].valset = false;
+        }
+
+        data[k].sum = add(a, b, x, l, (l + r) / 2, k * 2 + 1) + add(a, b, x, (l + r) / 2 + 1, r, k * 2 + 2);
+        return data[k].calc_sum(l, r);
+    }
+
+    ll query(int a, int b, int l = 0, int r = -1, int k = 0) {
+        if (r == -1) r = seg_size - 1;
+        if (r < a || b < l) return 0;
+        if ((a <= l && r <= b) || data[k].valset) return data[k].calc_sum(max(a, l), min(b, r));
+        return query(a, b, l, (l + r) / 2, k * 2 + 1) + query(a, b, (l + r) / 2 + 1, r, k * 2 + 2) +
+            data[k].add * (min(b, r) - max(a, l) + 1);
+    }
+
+};
+
+
+
+
+
+
+
+
+// 区間set, 区間or和
+typedef long long ll;
+struct ST {
+    vector<ll> dat, lazy;
+    int n;
+
+    ST(int size) {
+        n = 1;
+        while (n < size) n *= 2;
+        dat.resize(n * 2, 0);
+        lazy.resize(n * 2, -1);
+    }
+
+    void push(int k, int l, int r) {
+        if (lazy[k] != -1) {
+            dat[k] = lazy[k];
+            if (r - l > 1) {
+                lazy[k * 2 + 1] = lazy[k];
+                lazy[k * 2 + 2] = lazy[k];
+            }
+            lazy[k] = -1;
+        }
+    }
+
+    void update(int a, int b, ll v, int k, int l, int r) {
+        push(k, l, r);
+        if (r <= a || b <= l) return;
+        if (a <= l && r <= b) {
+            lazy[k] = v;
+            push(k, l, r);
+        }
+        else {
+            update(a, b, v, k * 2 + 1, l, (l + r) / 2);
+            update(a, b, v, k * 2 + 2, (l + r) / 2, r);
+            dat[k] = dat[k * 2 + 1] | dat[k * 2 + 2];
+        }
+    }
+
+    void update(int a, int b, ll v) {
+        update(a, b, v, 0, 0, n);
+    }
+
+    ll query(int a, int b, int k, int l, int r) {
+        push(k, l, r);
+        if (r <= a || b <= l) return 0;
+        if (a <= l && r <= b) return dat[k];
+        auto x = query(a, b, k * 2 + 1, l, (l + r) / 2);
+        auto y = query(a, b, k * 2 + 2, (l + r) / 2, r);
+        return x | y;
+    }
+
+    ll query(int a, int b) {
+        int res = 0;
+        ll ans = query(a, b, 0, 0, n);
+        while (0 < ans) {
+            if (ans & 1) res++;
+            ans /= 2;
+        }
+        return res;
+    }
+};
+
+
+
+
+
+//(1)区間に一様加算 (2)区間の最小値
+struct segtree{
+public:
+    const int SIZE = 1 << 20;
+    //seg:区間の最小値 lazy:区間に対して、加える値でまだ遅延しているもの
+    vector<int> seg, lazy;//segは欲しい情報 lazyは区間に対する一様な処理を示すもの
+    segtree():seg(SIZE * 2), lazy(SIZE * 2){}
+    void lazy_evaluate(int k, int l, int r){//遅延情報の適用方法
+        if(lazy[k] != 0){
+            seg[k] += lazy[k];//区間[l,r)にすべて同じ値を追加することになっていて、segには最小値が入っているので、加える値を足す
+            if(r  - l > 1){
+                lazy[k * 2 + 1] += lazy[k];//遅延を左の子に伝搬
+                lazy[k * 2 + 2] += lazy[k];//遅延を右の子に伝搬
+            }
+            lazy[k] = 0;//ノードkは伝搬完了
+        }
+    }
+    void update(int a, int b, int k, int l, int r, int x){
+        lazy_evaluate(k, l, r);
+        if(r <= a || b <= l) return;
+        if(a <= l && r <= b){
+            lazy[k] += x; //加える
+            lazy_evaluate(k, l, r);
+        }else{
+            update(a, b, k * 2 + 1, l, (l + r) / 2, x);
+            update(a, b, k * 2 + 2, (l + r) / 2, r, x);
+            seg[k] = min(seg[k * 2 + 1], seg[k * 2 + 2]); //区間のmin
+        }
+    }
+    int query(int a, int b, int k, int l, int r){
+        lazy_evaluate(k, l, r);
+        if(r <= a || b <= l) return INF;//minの影響のないもの
+        if(a <= l && r <= b) return seg[k];
+        int x = query(a, b, k * 2 + 1, l, (l + r) / 2);
+        int y = query(a, b, k * 2 + 2, (l + r) / 2, r);
+        return min(x, y); //左右のminを
+    }
+    //update(a,b,x) := [a,b)を全てxを加える
+    void update(int a, int b, int x){update(a, b, 0, 0, SIZE, x);}
+    //query(a,b) := [a,b)に対する最小値を求める
+    int query(int a, int b){return query(a, b, 0, 0, SIZE);}
+};
+
+
+// 区間add, 区間最大値(with index)
+#define INF 1LL<<60
+typedef long long ll;
+template<class V, int NV> class SegTreeAddMaxWithIndex {
+public:
+    vector<pair<V, int> > val;
+    vector<pair<V, int> > ma;
+    #define def -INF
+    SegTreeAddMaxWithIndex() {
+        int i;
+        val.resize(NV * 2); ma.resize(NV * 2);
+        rep(i, 0, NV) val[i + NV] = ma[i + NV] = make_pair(0, i);
+        rep(i, 0, NV) val[i] = make_pair(0, 0);
+        for (i = NV - 1; i >= 1; i--) ma[i] = max(ma[2 * i], ma[2 * i + 1]);
+    };
+
+    pair<V, int> getval(int x, int y, int l = 0, int r = NV, int k = 1) {
+        if (r <= x || y <= l) return make_pair(def, 0);
+        if (x <= l && r <= y) return ma[k];
+        auto a = max(getval(x, y, l, (l + r) / 2, k * 2), getval(x, y, (l + r) / 2, r, k * 2 + 1));
+        a.first += val[k].first;
+        return a;
+    }
+
+    void update(int x, int y, V v, int l = 0, int r = NV, int k = 1) {
+        if (l >= r) return;
+        if (x <= l && r <= y) {
+            val[k].first += v;
+            ma[k].first += v;
+        }
+        else if (l < y && x < r) {
+            update(x, y, v, l, (l + r) / 2, k * 2);
+            update(x, y, v, (l + r) / 2, r, k * 2 + 1);
+            ma[k] = max(ma[k * 2], ma[k * 2 + 1]);
+            ma[k].first += val[k].first;
+        }
+    }
+};

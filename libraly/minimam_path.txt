@@ -1,0 +1,117 @@
+ワーシャルフロイド
+----------------------------------------------
+
+## ワーシャルフロイド
+int d[V][V];
+REP(i, V) REP(j, V)
+{
+	if (i == j)
+		d[i][j] = 0;
+	else
+		d[i][j] = INF;
+}
+// ここで辺のコストを指定
+rep(k, 0, N) rep(i, 0, N) rep(j, 0, N)
+			d[i][j] = min(d[i][j], d[i][k] + d[k][j]);
+
+
+
+
+
+ダイクストラ
+----------------------------------------------
+
+      #include <bits/stdc++.h>
+      using namespace std;
+      #define rep(i,a,b) for(int i=a;i<b;i++)
+      #define INF INT_MAX/2
+
+      typedef vector<int> vi;
+      typedef vector<vi> vvi;
+      typedef pair<int, int> Node;
+      typedef pair<Node, int> pni;
+
+      // この不等号の向きは誤植じゃない
+      // priority_queueの時は昇順にする場合は、 > の向き（通常の降順）でやる
+      // priority_queueは内部的に降順でやってるらしい
+      struct Comp {
+      	bool operator() (pni a, pni b) {
+      		return a.second > b.second;
+      	}
+      };
+
+      int solve(int N, int M, int L)
+      {
+      	vvi D(N, vi(N, -1));
+      	vvi E(N, vi(N, -1));
+
+      	rep(i, 0, M)
+      	{
+      		int a, b, d, e;
+      		cin >> a >> b >> d >> e;
+      		a--; b--;
+
+      		D[a][b] = d; D[b][a] = d;
+      		E[a][b] = e; E[b][a] = e;
+      	}
+
+      	priority_queue<pni, vector<pni>, Comp> que;
+      	map<Node, int> dist; 	// ダイクストラではなるべくmapとsetを使わないようにする
+      	set<Node> done;			// (TLEで落ちるから)
+
+      	que.push(pni(Node(0, L), 0));
+      	while (!que.empty())
+      	{
+      		Node n = que.top().first;
+      		int c = que.top().second;
+      		que.pop();
+
+      		if (done.find(n) != done.end()) continue;
+      		done.insert(n);
+
+      		if (n.first == N - 1) return c;
+
+      		rep(i, 0, N)
+      		{
+      			if (D[n.first][i] < 0) continue;
+
+      			int newcost;
+      			Node newnode;
+
+      			// 雇わない
+      			newcost = c + E[n.first][i];
+      			newnode = Node(i, n.second);
+      			if (dist.find(newnode) == dist.end()) dist[newnode] = INF;
+      			if (newcost < dist[newnode])
+      			{
+      				dist[newnode] = newcost;
+      				que.push(pni(newnode, newcost));
+      			}
+
+      			// 雇えるなら雇う
+      			if (n.second < D[n.first][i]) continue;
+      			newcost = c;
+      			newnode = Node(i, n.second - D[n.first][i]);
+      			if (dist.find(newnode) == dist.end()) dist[newnode] = INF;
+      			if (newcost < dist[newnode])
+      			{
+      				dist[newnode] = newcost;
+      				que.push(pni(newnode, newcost));
+      			}
+      		}
+      	}
+      }
+
+
+
+      int main()
+      {
+      	while (1)
+      	{
+      		int N, M, L;
+      		cin >> N >> M >> L;
+      		if (N == 0) return 0;
+
+      		cout << solve(N, M, L) << endl;
+      	}
+      }

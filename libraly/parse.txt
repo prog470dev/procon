@@ -1,0 +1,106 @@
+構文解析
+----------------------------------------------
+
+
+
+bool match(char c, string s)
+{
+	rep(i, 0, s.length()) if (s[i] == c) return true;
+	return false;
+}
+
+
+
+
+
+## ()とか[]とかの構文解析
+struct Node {
+	Node *left, *right;
+	int value;
+};
+int i = 0;
+parse(s, &i)みたいに呼ぶ
+Node* parse(string s, int& i)
+{
+	Node *n = new Node;
+}
+
+
+
+
+
+
+
+## 優先順位がある場合の深さ(変数x)を使った構文解析例
+
+優先順位が
++- < */ < ()
+の場合、
++- -> x = 0
+*/ -> x = 1
+(), 数 -> x = 2
+として深さを用いて優先順に処理していく
+
+#include <bits/stdc++.h>
+using namespace std;
+#define rep(i,a,b) for(int i=a;i<b;i++)
+
+bool match(char c, string s)
+{
+	rep(i, 0, s.length()) if (s[i] == c) return true;
+	return false;
+}
+
+string op[2] = { "+-", "*/" };
+
+int parse(string s, int &i, int x)
+{
+	if (x == 2)
+	{
+		if (s[i] == '(')
+		{
+			i++;
+			int ans = parse(s, i, 0);
+			i++;
+			return ans;
+		}
+		else
+		{
+			int ret = 0;
+			while ('0' <= s[i] && s[i] <= '9')
+			{
+				ret = ret * 10 + s[i] - '0';
+				i++;
+			}
+			return ret;
+		}
+	}
+	else
+	{
+		int ans = parse(s, i, x + 1);
+
+		while (op[x].find(s[i]) != string::npos)
+		{
+			switch (s[i])
+			{
+			case '+': i++; ans += parse(s, i, x + 1); break;
+			case '-': i++; ans -= parse(s, i, x + 1); break;
+			case '*': i++; ans *= parse(s, i, x + 1); break;
+			case '/': i++; ans /= parse(s, i, x + 1); break;
+			}
+		}
+
+		return ans;
+	}
+}
+
+int main()
+{
+	int n; cin >> n;
+	rep(_n, 0, n)
+	{
+		string s; cin >> s;
+		int i = 0;
+		cout << parse(s, i, 0) << endl;
+	}
+}
