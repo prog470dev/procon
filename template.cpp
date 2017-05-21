@@ -16,6 +16,9 @@
 #define RREP(i,a,b) for(int i=(b-1);a<=i;i--)
 #define F first
 #define S second
+#define ll long long;
+
+const int INF = 1e9;
 
 using namespace std;
 
