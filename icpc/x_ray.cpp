@@ -19,7 +19,7 @@
 #define ll long long;
 
 const int INF = 1e9;
-const long long  LLINF = 1e15;
+const int LLINF = 1e15;
 
 using namespace std;
 
