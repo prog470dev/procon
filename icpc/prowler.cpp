@@ -1,3 +1,12 @@
+/*
+2017_05_27_AC
+<point>
+・右斜め前はなくてもOK
+<caution>
+・範囲と、グリッドの内容の条件分岐は別にする。
+（範囲外アクセスが起きる。）
+*/
+
 #include <iostream>
 #include <cstdio>
 #include <cmath>

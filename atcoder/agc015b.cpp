@@ -23,7 +23,31 @@ const long long  LLINF = 1e15;
 
 using namespace std;
 
+string S;
+long long imos[100010];
+
 int main() {
+  cin>>S;
+  REP(i,0,S.size()){
+    if(S[i] == 'U'){
+      imos[i+1]++;
+      imos[S.size()]--;
+      imos[0] += 2;
+      imos[i] -= 2;
+    }else{
+      imos[i+1] += 2;
+      imos[S.size()] -= 2;
+      imos[0]++;
+      imos[i]--;
+    }
+  }
+  long long ans = 0;
+  REP(i,0,S.size()){
+    if(i>0) imos[i] += imos[i-1];
+    ans += imos[i];
+  }
+
+  cout<<ans<<endl;
 
   return 0;
 }

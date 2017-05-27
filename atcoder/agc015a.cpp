@@ -24,6 +24,12 @@ const long long  LLINF = 1e15;
 using namespace std;
 
 int main() {
-
+  int N, A, B;
+  cin>>N>>A>>B;
+  if(A > B || (N < 2 && A!=B)){
+    cout<<0<<endl;
+    return 0;
+  }
+  cout<<((N-1)*B+A) - ((N-1)*A+B) +1<<endl;
   return 0;
 }
