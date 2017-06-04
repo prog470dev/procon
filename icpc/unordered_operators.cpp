@@ -1,3 +1,14 @@
+/*
+2017_06_04_AC
+<point>
+・ノーマルな四則演算パーサーに優先度をつけた。
+　（もっと完結にはできるはず → 濱屋さんにGO）
+<caution>
+・整数の最大値（最小値）を取得刷る方法。※一ずれているので"-"をつけるだけでは駄目。
+  ll ans = numeric_limits<long long>::min();
+  ll ans = numeric_limits<long long>::max();
+*/
+
 #include <iostream>
 #include <cstdio>
 #include <cmath>
@@ -18,8 +29,8 @@
 #define S second
 #define ll long long
 
-const int INF = 1e9;
-const ll LLINF = 1e15;
+const int INF = (1<<30);
+const ll LLINF = (1LL<<62);
 
 using namespace std;
 
@@ -28,10 +39,7 @@ typedef string::const_iterator State;
 vector<char> ope[3];
 vector<int> v;
 int first, second, third;
-/*
-int expression(State &);
-int term(State &);
-*/
+
 ll firstParse(State &);
 ll secondParse(State &);
 ll thirdParse(State &);
@@ -53,9 +61,9 @@ ll factor(State &begin) {
   if (*begin == '(') {
     begin++; // '('を飛ばす。
     ll ret;
-    if(ope[third].size()==3) ret = thirdParse(begin);
-    else if(ope[third].size()==2) ret = secondParse(begin);
-    else if(ope[third].size()==1) ret = firstParse(begin);
+    if(v.size()==3) ret = thirdParse(begin);
+    else if(v.size()==2) ret = secondParse(begin);
+    else if(v.size()==1) ret = firstParse(begin);
     begin++; // ')'を飛ばす。
     return ret;
   } else {
@@ -64,7 +72,7 @@ ll factor(State &begin) {
   return -1;
 }
 
-// 乗算除算の式をパースして、その評価結果を返す。
+//第一優先expression
 ll firstParse(State &begin){
   ll ret = factor(begin);
   for (;;) {
@@ -80,22 +88,11 @@ ll firstParse(State &begin){
       }
     }
     if(!flag) break;
-    /*
-    if (*begin == '*') {
-        begin++;
-        ret *= factor(begin);
-    } else if (*begin == '/') {
-        begin++;
-        ret /= factor(begin);
-    } else {
-        break;
-    }
-    */
   }
   return ret;
 }
 
-// 四則演算の式をパースして、その評価結果を返す。
+//第二優先expression
 ll secondParse(State &begin) {
   ll ret = firstParse(begin);
   for (;;) {
@@ -111,22 +108,11 @@ ll secondParse(State &begin) {
       }
     }
     if(!flag) break;
-    /*
-      if (*begin == '+') {
-          begin++;
-          ret += term(begin);
-      } else if (*begin == '-') {
-          begin++;
-          ret -= term(begin);
-      } else {
-          break;
-      }
-      */
   }
   return ret;
 }
 
-// 四則演算の式をパースして、その評価結果を返す。
+//第三優先expression
 ll thirdParse(State &begin) {
   ll ret = secondParse(begin);
   for (;;) {
@@ -150,7 +136,7 @@ int main() {
   string s;
   cin>>s;
   State start = s.begin();
-  ll ans = (-1)*LLINF;
+  ll ans = numeric_limits<long long>::min();
   /*数字が小さほど優先度の高い演算子*/
   REP(i,0,3){
     REP(j,0,3){
@@ -160,16 +146,20 @@ int main() {
         ope[i].push_back('+');
         ope[j].push_back('-');
         ope[k].push_back('*');
+
         v.clear();
-        v.push_back(i); v.push_back(j); v.push_back(k);
+        v.push_back(i);
+        v.push_back(j);
+        v.push_back(k);
         sort(v.begin(),v.end());
+        //要素をユニークにして、優先度の「数」に調整
         v.erase(unique(v.begin(),v.end()),v.end());
+
         ll tmp;
         State start = s.begin();
 
-        //cout<<"i:"<<i<<" j:"<<j<<" k:"<<k<<endl;
-        //cout<<"v.size() : "<<v.size()<<endl;
-
+        //使用する演算子の優先度の「数」で場合分け
+        //（数が少ないほど、低レベルから呼び出す。）
         if(v.size() == 3){
           first = v[0]; second = v[1]; third = v[2];
           tmp = thirdParse(start);
@@ -181,6 +171,7 @@ int main() {
           tmp = firstParse(start);
         }
         ans = max(ans, tmp);
+
       }
     }
   }

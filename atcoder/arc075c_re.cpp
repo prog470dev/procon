@@ -22,8 +22,36 @@ const int INF = 1e9;
 const long long  LLINF = 1e15;
 
 using namespace std;
+long long N, S[105];
+
+bool dp[110][10010];  //dp[i][j]:数字を i"個" 選ぶとき、j は作れるか？
 
 int main() {
+  cin>>N;
+  long long sumd = 0, sum = 0;
+  REP(i,0,N){
+    cin>>S[i];
+  }
 
+  dp[0][0] = true;
+
+  REP(i,0,N){
+    REP(j,0,10010-S[i]){
+      if(dp[i][j]){
+        dp[i+1][j] = true;
+        dp[i+1][j+S[i]] = true;
+      }
+    }
+  }
+
+  int ans = 0;
+  REP(i,0,N+1){
+    REP(j,0,10010){
+      if(dp[i][j] && j%10 != 0){
+        ans = max(ans, j);
+      }
+    }
+  }
+  cout<<ans<<endl;
   return 0;
 }
