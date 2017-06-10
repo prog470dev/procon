@@ -89,12 +89,11 @@ int expression(State &begin) {
   return ret;
 }
 
-
 int main() {
     string S;
     cin>>S;
     State state = S.begin();
     cout<<expression(state)<<endl;
-  
+
   return 0;
 }
