@@ -2,7 +2,8 @@
 <point>
 ・d[y1][x1][y2][x2]: 長方形(y1,x1,y2,x2)を一つの街として見た場合の最大値
 ・内包している長方形について再帰的に探索する。
-・予備力：分割可能な内包グループの中で、最小値のものを、全体の合計から引いたもの。
+・予備力：分割可能な内包グループの中で、”最小値のもの”を、全体の合計から引いたもの。
+・各範囲の合計値は先に計算しておく。
 <caution>
 ・dfs()の返り値の初期値は、”極端な状態”を考えて値を入れる。
 ・条件”分割できるグループ数が、これまでより多い”で事前に分岐させなくても、
@@ -53,8 +54,7 @@ pair<int, int> dfs(int y1, int x1, int y2, int x2){
   for(int cutx=x1; cutx<x2; cutx++){
     int suml = sum[y1][x1][y2][cutx];
     int sumr = sum[y1][cutx+1][y2][x2];
-    //分割したグループ単体で、すでに条件を満たしていなければアウト
-    //(そのグループを停電させても供給オーバー)
+    //この条件をクリアすれば、分割の条件としてはクリアしている。
     if(sum[0][0][H-1][W-1]-suml > S || sum[0][0][H-1][W-1]-sumr > S) continue;
     pair<int, int>  l = dfs(y1,x1,y2,cutx);
     pair<int, int>  r = dfs(y1,cutx+1,y2,x2);
@@ -69,7 +69,7 @@ pair<int, int> dfs(int y1, int x1, int y2, int x2){
     if(sum[0][0][H-1][W-1]-suml > S || sum[0][0][H-1][W-1]-sumr > S) continue;
     pair<int, int>  l = dfs(y1,x1,cuty,x2);
     pair<int, int>  r = dfs(cuty+1,x1,y2,x2);
-    pair<int, int> tmp = make_pair(l.F+r.F, min(l.S,r.S));  
+    pair<int, int> tmp = make_pair(l.F+r.F, min(l.S,r.S));
     ret = max(ret, tmp);
   }
 
