@@ -69,7 +69,7 @@ pair<int, int> dfs(int y1, int x1, int y2, int x2){
     if(sum[0][0][H-1][W-1]-suml > S || sum[0][0][H-1][W-1]-sumr > S) continue;
     pair<int, int>  l = dfs(y1,x1,cuty,x2);
     pair<int, int>  r = dfs(cuty+1,x1,y2,x2);
-    pair<int, int> tmp = make_pair(l.F+r.F, min(l.S,r.S));  //予備力は最低値で計算される
+    pair<int, int> tmp = make_pair(l.F+r.F, min(l.S,r.S));  
     ret = max(ret, tmp);
   }
 
