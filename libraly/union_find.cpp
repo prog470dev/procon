@@ -1,41 +1,12 @@
-#include <iostream>
-#include <cstdio>
-#include <cmath>
-#include <cstdio>
-#include <cstring>
-#include <string>
-#include <vector>
-#include <set>
-#include <map>
-#include <stack>
-#include <queue>
-#include <algorithm>
-
-#define CK(N,A,B) (A<=N&&N<B)
-#define REP(i,a,b) for(int i=a;i<b;i++)
-#define RREP(i,a,b) for(int i=(b-1);a<=i;i--)
-#define F first
-#define S second
-#define ll long long;
-
-const int INF = 1e9;
-const long long  LLINF = 1e15;
-
-using namespace std;
-
 /*
 Union-Find
 使用例：
-int main(){
   //実体化 (N:ノードの最大個数)
   UnionFind uf(N);
   //ノードxとノードyを同じグループに結合
   uf.unite(x, y);
   //ノードxとノードyを同じグループかどうか(true or false)
   uf.same(x, y);
-
-  return 0;
-}
 */
 
 const int MAX_N = 100010;

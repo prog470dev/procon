@@ -23,7 +23,32 @@ const long long  LLINF = 1e15;
 
 using namespace std;
 
+int n;
+int a[200010];
+
 int main() {
+  cin>>n;
+  REP(i,0,n) cin>>a[i];
+
+  int l=-1, r=1;
+  vector<pair<int,int> > b;
+  REP(i,0,n){
+    if(i%2==0){
+      b.push_back(make_pair(l,a[i]));
+      l--;
+    }else{
+      b.push_back(make_pair(r,a[i]));
+      r++;
+    }
+  }
+  sort(b.begin(),b.end());
+
+  if(n%2==0) {
+    RREP(i,0,b.size()) cout<<b[i].S<<" ";
+  }else{
+    REP(i,0,b.size()) cout<<b[i].S<<" ";
+  }
+  cout<<endl;
 
   return 0;
 }

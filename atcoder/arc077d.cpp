@@ -23,6 +23,8 @@ const long long  LLINF = 1e15;
 
 using namespace std;
 
+const int MOD = 1000000007;
+
 int main() {
 
   return 0;
