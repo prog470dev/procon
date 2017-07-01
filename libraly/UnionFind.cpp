@@ -1,20 +1,47 @@
+#include <iostream>
+#include <cstdio>
+#include <cmath>
+#include <cstdio>
+#include <cstring>
+#include <string>
+#include <vector>
+#include <set>
+#include <map>
+#include <stack>
+#include <queue>
+#include <algorithm>
+
+#define CK(N,A,B) (A<=N&&N<B)
+#define REP(i,a,b) for(int i=a;i<b;i++)
+#define RREP(i,a,b) for(int i=(b-1);a<=i;i--)
+#define F first
+#define S second
+#define ll long long;
+
+const int INF = 1e9;
+const long long  LLINF = 1e15;
+
+using namespace std;
+
 /*
+Union-Find
+使用例：
+int main(){
+  //実体化 (N:ノードの最大個数)
+  UnionFind uf(N);
+  //ノードxとノードyを同じグループに結合
+  uf.unite(x, y);
+  //ノードxとノードyを同じグループかどうか(true or false)
+  uf.same(x, y);
 
-;example in main function
-
-UnionFind uf(N);
-unite(x, y);
-same(x, y);
-
+  return 0;
+}
 */
 
-#define MAX_N 1e9
-
+const int MAX_N = 100010;
 struct UnionFind{
-
   int par[MAX_N];
   int deph[MAX_N];
-
   UnionFind(int n){
     fill(par, par + MAX_N, -1);
     for(int i=0; i<n; i++){
@@ -22,7 +49,6 @@ struct UnionFind{
       deph[i] = 0;
     }
   }
-
   int find(int x){
     if(par[x] == x){
       return x;
@@ -30,7 +56,6 @@ struct UnionFind{
       return par[x] = find(par[x]);
     }
   }
-
   void unite(int x, int y){
     x = find(x);
     y = find(y);
@@ -42,7 +67,6 @@ struct UnionFind{
       if(deph[x] == deph[y]) deph[x]++;
     }
   }
-
   bool same(int x, int y){
     return find(x) == find(y);
   }
