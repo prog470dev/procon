@@ -24,7 +24,7 @@ const long long  LLINF = 1e15;
 
 using namespace std;
 
-int main() {
+int main(){
 
   return 0;
 }
