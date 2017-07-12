@@ -1,3 +1,8 @@
+/*
+・「囲む」ための左端トークンに出会うたびに、
+ 　新しいオブジェクトを生成し、そこでいちからスタート。
+*/
+
 #include <iostream>
 #include <cstdio>
 #include <cmath>
