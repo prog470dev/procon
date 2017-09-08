@@ -25,9 +25,37 @@ const long long  LLINF = 1e18;
 
 using namespace std;
 
+/*===========================================*/
+
+ll gcd( ll a, ll b){
+  if(b == 0){
+    return a;
+  }
+  return gcd(b, a % b);
+}
+
+ll lcm( ll a, ll b )
+{
+	return a / gcd(a, b) * b;
+}
+
+/*===========================================*/
+
+int N;
+ll T[105];
+
 int main(){
+  cin>>N;
+  REP(i,0,N){
+    cin>>T[i];
+  }
 
+  ll ans = T[0];
+  REP(i,1,N){
+    ans = lcm(ans, T[i]);
+  }
 
+  cout<<ans<<endl;
 
   return 0;
 }

@@ -11,7 +11,6 @@
 #include <queue>
 #include <deque>
 #include <algorithm>
-#include <utility>
 
 #define CK(N,A,B) (A<=N&&N<B)
 #define REP(i,a,b) for(int i=a;i<b;i++)
@@ -27,7 +26,15 @@ using namespace std;
 
 int main(){
 
+  string S;
+  cin>>S;
 
+  REP(i,0,S.size()){
+    if(i % 2 == 0){
+      cout<<S[i];
+    }
+  }
+  cout<<endl;
 
   return 0;
 }

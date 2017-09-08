@@ -11,7 +11,6 @@
 #include <queue>
 #include <deque>
 #include <algorithm>
-#include <utility>
 
 #define CK(N,A,B) (A<=N&&N<B)
 #define REP(i,a,b) for(int i=a;i<b;i++)
@@ -25,9 +24,14 @@ const long long  LLINF = 1e18;
 
 using namespace std;
 
+int x,y,tx,ty;
+
 int main(){
-
-
-
+  cin>>x>>y>>tx>>ty;
+  if(x==y && tx==ty && (tx<x&&ty<y)){
+    cout<<x+1<<endl;
+  }else{
+    cout<<max(x,y)<<endl;
+  }
   return 0;
 }

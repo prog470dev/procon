@@ -11,7 +11,6 @@
 #include <queue>
 #include <deque>
 #include <algorithm>
-#include <utility>
 
 #define CK(N,A,B) (A<=N&&N<B)
 #define REP(i,a,b) for(int i=a;i<b;i++)
@@ -27,7 +26,22 @@ using namespace std;
 
 int main(){
 
+  string S;
+  cin>>S;
 
+  set<int> st;
+  REP(i,0,S.size()){
+    st.insert(S[i] - 'a');
+  }
+
+  REP(i,0,26){
+    if(st.find(i) == st.end()){
+      cout<<(char)('a' + i)<<endl;
+      return 0;
+    }
+  }
+
+  cout<<"None"<<endl;
 
   return 0;
 }
