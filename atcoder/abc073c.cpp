@@ -25,15 +25,19 @@ const long long  LLINF = 1e18;
 
 using namespace std;
 
-
-/*==================================================*/
-
-/*==================================================*/
-
-
 int main(){
 
+  set<int> st;
+  int N, A;
 
+  cin>>N;
+  REP(i,0,N){
+    cin>>A;
+    if(st.find(A) == st.end()) st.insert(A);
+    else st.erase(A);
+  }
+
+  cout<<st.size()<<endl;
 
   return 0;
 }

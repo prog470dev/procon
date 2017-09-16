@@ -25,15 +25,18 @@ const long long  LLINF = 1e18;
 
 using namespace std;
 
-
-/*==================================================*/
-
-/*==================================================*/
-
+int N;
+long long ans = 0;
 
 int main(){
+  cin>>N;
+  REP(i,0,N){
+    int l, r;
+    cin>>l>>r;
+    ans += r -l + 1;
+  }
 
-
+  cout<<ans<<endl;
 
   return 0;
 }

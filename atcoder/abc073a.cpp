@@ -25,15 +25,19 @@ const long long  LLINF = 1e18;
 
 using namespace std;
 
-
-/*==================================================*/
-
-/*==================================================*/
-
-
 int main(){
 
+  string S;
+  cin>>S;
 
+  REP(i,0,S.size()){
+    if(S[i] == '9'){
+      cout<<"Yes"<<endl;
+      return 0;
+    }
+  }
+
+  cout<<"No"<<endl;
 
   return 0;
 }

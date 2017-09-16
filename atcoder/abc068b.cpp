@@ -30,10 +30,26 @@ using namespace std;
 
 /*==================================================*/
 
+int N;
 
 int main(){
 
+  cin>>N;
+  int ans = 1, ta = 0;
+  for(int i = N; 0 <= i; i--){
+    int t = i;
+    int cnt = 0;
+    while(t % 2 == 0 && t > 0){
+      cnt++;
+      t /= 2;
+    }
+    if(ta < cnt ){
+      ans = i;
+      ta = cnt;
+    }
+  }
 
+  cout<<ans<<endl;
 
   return 0;
 }

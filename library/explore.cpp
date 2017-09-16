@@ -67,16 +67,16 @@ int dfs(int curNode, int step){
 
 /*
  BFS（幅優先探索）
- 
+
  概要（使用例）：
     グラフ v に対して、ノードiからのBFSを行う.
  　　ノードiから制限距離(R[i])以内で到達するノードまでの経路の辺に、
     重さ(C[i])を付け、新しいグラフ(edge[][])を作成する.
- 
+
     int N;   //ノード数
     vector<int> v[5010];    //ノードの接続関係
     ※v[i][j]が存在 => ノードiとノードjは接続されている.
- 
+
  計算量 :
     O( |E| ) ※E:エッジの数
  */
@@ -86,7 +86,7 @@ REP(i,0,N){
     bool visited[5010];
     REP(i,0,N) visited[i]=false;    //初期位置を設定
     q.push({0,i});
-    
+
     while(!q.empty()){
         int curNode = q.front().S;
         int curStep = q.front().F;
@@ -102,4 +102,3 @@ REP(i,0,N){
         }
     }
 }
-
