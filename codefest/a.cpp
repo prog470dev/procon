@@ -28,7 +28,32 @@ using namespace std;
 
 /*==================================================*/
 
+char c[] = {'Y','A','K','I'};
+
 int main() {
-    
+
+    string s;
+    cin>>s;
+    if(s.size() < 4){
+        cout<<"No"<<endl;
+        return 0;
+    }
+    REP(i,0,s.size()){
+        if(i < 4){
+            if(c[i] != s[i]){
+                cout<<"No"<<endl;
+                return 0;
+            }
+            if(i == 3){
+                cout<<"Yes"<<endl;
+                return 0;
+            }
+        }
+        if(i >= 4){
+            cout<<"No"<<endl;
+            return 0;
+        }
+    }
+
     return 0;
 }

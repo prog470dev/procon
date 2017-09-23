@@ -28,7 +28,18 @@ using namespace std;
 
 /*==================================================*/
 
+int N , M, K;
+
 int main() {
-    
+    cin>>N>>M>>K;
+    REP(i,0,N+1){
+        REP(j,0,M+1){
+            if((M-j)*i + (N-i)*j == K){
+                cout<<"Yes"<<endl;
+                return 0;
+            }
+        }
+    }
+    cout<<"No"<<endl;
     return 0;
 }
