@@ -24,35 +24,40 @@ const long long LLINF = 1e18;
 
 using namespace std;
 
-/*==================================================*/
+int dy[] = {0,1,1,1,0,-1,-1,-1};
+int dx[] = {1,1,0,-1,-1,-1,0,1};
+
+int N, M;
+string field[50];
 
 /*==================================================*/
 
-int N, D, M, T;
-map<int,int> m;
+/*==================================================*/
 
 int main() {
-    cin>>N;
+    cin>>N>>M;
     REP(i,0,N){
-        cin>>D;
-        m[D]++;
+        cin>>field[i];
     }
-    cin>>M;
-    REP(i,0,M){
-        cin>>T;
-        if(m.find(T) != m.end()){
-            m[T]--;
-            if(m[T] < 0){
-                cout<<"NO"<<endl;
-                return 0;
+
+    REP(i,0,N){
+        REP(j,0,M){
+            if(field[i][j] == '#') continue;
+            int cnt = 0;
+            REP(k,0,8){
+                int y = i + dy[k];
+                int x = j + dx[k];
+                if(!CK(y,0,N) || !CK(x,0,M)) continue;
+                if(field[y][x] == '#') cnt++;
             }
-        }else{
-            cout<<"NO"<<endl;
-            return 0;
+            field[i][j] = (char)('0' + cnt);
         }
     }
 
-    cout<<"YES"<<endl;
+
+    REP(i,0,N){
+        cout<<field[i]<<endl;;
+    }
 
     return 0;
 }

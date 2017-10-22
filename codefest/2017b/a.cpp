@@ -28,7 +28,10 @@ using namespace std;
 
 /*==================================================*/
 
-int main() {
+string s;
 
+int main() {
+    cin>>s;
+    cout<<s.substr(0,s.size()-8)<<endl;
     return 0;
 }

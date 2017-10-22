@@ -28,31 +28,17 @@ using namespace std;
 
 /*==================================================*/
 
-int N, D, M, T;
-map<int,int> m;
-
 int main() {
-    cin>>N;
-    REP(i,0,N){
-        cin>>D;
-        m[D]++;
-    }
-    cin>>M;
-    REP(i,0,M){
-        cin>>T;
-        if(m.find(T) != m.end()){
-            m[T]--;
-            if(m[T] < 0){
-                cout<<"NO"<<endl;
-                return 0;
-            }
-        }else{
-            cout<<"NO"<<endl;
-            return 0;
+
+    int a[3];
+    map<int, int> m;
+    REP(i,0,3) cin>>a[i], m[a[i]]++;
+
+    REP(i,0,3) {
+        if(m[a[i]] == 1){
+            cout<<a[i]<<endl;
         }
     }
-
-    cout<<"YES"<<endl;
 
     return 0;
 }
