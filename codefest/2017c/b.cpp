@@ -24,16 +24,29 @@ const long long LLINF = 1e18;
 
 using namespace std;
 
-int dy[] = {0,1,0,-1};
-int dx[] = {1,0,-1,0};
-int dy8[] = {0,1,1,1,0,-1,-1,-1};
-int dx8[] = {1,1,0,-1,-1,-1,0,1};
+int dy[] = {0,1,1,1,0,-1,-1,-1};
+int dx[] = {1,1,0,-1,-1,-1,0,1};
 
 /*==================================================*/
 
 /*==================================================*/
+
+long long N, A[10];
+
+long long  ans = 1, odd = 1;
 
 int main() {
+    cin>>N;
+    REP(i,0,N){
+        cin>>A[i];
+        if(A[i] % 2 != 0) odd *= 1;
+        else odd *= 2;
+        ans *= 3;
+    }
+
+    ans -= odd;
+
+    cout<<ans<<endl;
 
     return 0;
 }

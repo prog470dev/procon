@@ -24,10 +24,8 @@ const long long LLINF = 1e18;
 
 using namespace std;
 
-int dy[] = {0,1,0,-1};
-int dx[] = {1,0,-1,0};
-int dy8[] = {0,1,1,1,0,-1,-1,-1};
-int dx8[] = {1,1,0,-1,-1,-1,0,1};
+int dy[] = {0,1,1,1,0,-1,-1,-1};
+int dx[] = {1,1,0,-1,-1,-1,0,1};
 
 /*==================================================*/
 
@@ -35,5 +33,20 @@ int dx8[] = {1,1,0,-1,-1,-1,0,1};
 
 int main() {
 
+    string s;
+    cin>>s;
+    bool flag = false;
+    REP(i,0,s.size()){
+        if(s[i] == 'A' ){
+            flag = true;
+        }else if(s[i] == 'C'  && flag){
+            cout<<"Yes"<<endl;
+            return 0;
+        }else{
+            flag = false;
+        }
+    }
+
+    cout<<"No"<<endl;
     return 0;
 }
