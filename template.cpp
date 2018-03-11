@@ -17,7 +17,7 @@
 #define RREP(i, a, b) for (int i = (b - 1); a <= i; i--)
 #define F first
 #define S second
-#define ll long long
+#typedef long long ll;
 
 const int INF = 1e9;
 const long long LLINF = 1e18;
