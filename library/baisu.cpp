@@ -8,6 +8,9 @@
 計算量 O(n)
 */
 
+#include <string>
+using namespace std;
+
 bool is3bai(string s){
 	ll ret=0;
 	REP(i,0,s.size()){

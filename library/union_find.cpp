@@ -9,7 +9,10 @@ Union-Find
   uf.same(x, y);
 */
 
+using namespace std;
+
 const int MAX_N = 100010;
+
 struct UnionFind{
     int par[MAX_N];
     int deph[MAX_N];
