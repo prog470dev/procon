@@ -23,6 +23,8 @@ using namespace std;
 /*==================================================*/
 /* variable */
 
+const int NODE_SIZE = 10101;
+
 int dx[4] = { 0, 1, 0, -1 };
 int dy[4] = { -1, 0, 1, 0 };
 int dx8[8] = { 0,1,1,1,0,-1,-1,-1 };
@@ -33,23 +35,23 @@ int M;  // エッジ数
 int R;  //制限ステップ
 int start;  //開始ノード番号
 
-vector<pair<int,int>> edge[10101];    //ノードの接続関係 <エッジの重み, 接続先ノード>
-int graph[10101][10101];   //ノードの接続関係 (接続:1, 他:0)
+vector<pair<int,int>> edge[NODE_SIZE];    //ノードの接続関係 <エッジの重み, 接続先ノード>
+int graph[NODE_SIZE][NODE_SIZE];   //ノードの接続関係 (接続:整数, 他:-1)
 
 int H;  //フィールドの高さ
 int W;  //フィールドの幅
 int start_y, start_x;    //開始座標
 
-int field[10101][10101];    //格子状のフィールド (配列)
-string field_s[10101];      //格子状のフィールド (string)
+int field[NODE_SIZE][NODE_SIZE];    //格子状のフィールド (配列)
+string field_s[NODE_SIZE];      //格子状のフィールド (string)
 
 /*==================================================*/
 /* function */
 
-//深さ優先探索 (グラフ: vector)
+//幅優先探索 (グラフ: vector)
 void bfs_vec(){
     queue<pair<int,int>> q; //<コスト, ノード>
-    bool visited[10101];
+    bool visited[NODE_SIZE];
     for(int i=0; i<N; i++) visited[i]=false;    //初期位置を設定
     q.push({0, start});  //開始ノードを追加
 
@@ -70,10 +72,10 @@ void bfs_vec(){
 }
 
 
-//深さ優先探索 (グラフ: 配列)
+//幅優先探索 (グラフ: 配列)
 void bfs_arr(){
     queue<pair<int,int>> q; //<コスト, ノード>
-    bool visited[10101];
+    bool visited[NODE_SIZE];
     for(int i=0; i<N; i++) visited[i]=false;    //初期位置を設定
     q.push({0, start});  //開始ノードを追加
 
@@ -94,10 +96,10 @@ void bfs_arr(){
 }
 
 
-//深さ優先探索 (フィールド: 配列/string)
+//幅優先探索 (フィールド: 配列/string)
 void bfs_field() {
     queue<pair<int,pair<int,int>>> q; //<コスト, 座標(y,x)>
-    bool visited[10101][10101];
+    bool visited[H][W];
     REP(i,0,H)REP(j,0,W) visited[i][j]=false;    //初期位置を設定
     q.push({0, (start_y, start_x))});  //開始ノードを追加
     
