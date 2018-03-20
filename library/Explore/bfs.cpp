@@ -101,7 +101,7 @@ void bfs_field() {
     queue<pair<int,pair<int,int>>> q; //<コスト, 座標(y,x)>
     bool visited[H][W];
     REP(i,0,H)REP(j,0,W) visited[i][j]=false;    //初期位置を設定
-    q.push({0, (start_y, start_x))});  //開始ノードを追加
+    q.push({0, {start_y, start_x}});  //開始ノードを追加
     
     while(!q.empty()){
         int cur_y = q.front().second.first;
@@ -121,7 +121,7 @@ void bfs_field() {
             if(!CK(cur_y,0,H) || !CK(cur_x,0,W)) continue;  //範囲外
             /* ここに問題ごとの条件 */
             if(!visited[next_y][next_x]){     //未到達の座標だけpush. 
-                q.push({curStep + 1, (next_y, next_x)});
+                q.push({curStep + 1, {next_y, next_x}});
             }
         }
     }
