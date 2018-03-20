@@ -21,7 +21,6 @@
 using namespace std;
 
 /*==================================================*/
-/* variable */
 
 const int NODE_SIZE = 10101;
 
@@ -30,6 +29,7 @@ int dy[4] = { -1, 0, 1, 0 };
 int dx8[8] = { 0,1,1,1,0,-1,-1,-1 };
 int dy8[8] = { -1,-1,0,1,1,1,0,-1 };
 
+
 int N;   //ノード数
 int M;  // エッジ数
 int R;  //制限ステップ
@@ -37,16 +37,6 @@ int start;  //開始ノード番号
 
 vector<pair<int,int>> edge[NODE_SIZE];    //ノードの接続関係 <エッジの重み, 接続先ノード>
 int graph[NODE_SIZE][NODE_SIZE];   //ノードの接続関係 (接続:整数, 他:-1)
-
-int H;  //フィールドの高さ
-int W;  //フィールドの幅
-int start_y, start_x;    //開始座標
-
-int field[NODE_SIZE][NODE_SIZE];    //格子状のフィールド (配列)
-string field_s[NODE_SIZE];      //格子状のフィールド (string)
-
-/*==================================================*/
-/* function */
 
 //幅優先探索 (グラフ: vector)
 void bfs_vec(){
@@ -95,6 +85,13 @@ void bfs_arr(){
     }
 }
 
+
+int H;  //フィールドの高さ
+int W;  //フィールドの幅
+int start_y, start_x;    //開始座標
+
+int field[NODE_SIZE][NODE_SIZE];    //格子状のフィールド (配列)
+string field_s[NODE_SIZE];      //格子状のフィールド (string)
 
 //幅優先探索 (フィールド: 配列/string)
 void bfs_field() {
