@@ -4,6 +4,8 @@
 (最大値最小値等をもとめるならミニマックスなど)
 ゲームが進むにつれ減っていくかcheck
 
+おすすめ解説URL
+http://yang33-kassa.hatenablog.com/entry/2017/12/21/202812
 
 Nim
 引数:   山の個数     (int)
