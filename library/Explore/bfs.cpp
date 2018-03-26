@@ -1,5 +1,5 @@
 /**
- * 深さ優先探索(BFS)
+ * 幅優先探索(BFS)
  *  - 時間計算量
  *      - O( |E| ) ※E:エッジの数
  *  - 探索対象
@@ -50,6 +50,7 @@ void bfs_vec(){
         int curStep = q.front().first;
         q.pop();
         if(curStep > R) continue;    //制限ステップ数を超えたら打ち切り
+        if(visited[curNode]) continue;
         visited[curNode] = true;
 
         for(int i=0; i<edge[curNode].size(); i++){
@@ -74,6 +75,7 @@ void bfs_arr(){
         int curStep = q.front().first;
         q.pop();
         if(curStep > R) continue;    //制限ステップ数を超えたら打ち切り
+        if(visited[curNode]) continue;
         visited[curNode] = true;
 
         for(int nextNode=0; nextNode<N; nextNode++){
@@ -106,6 +108,7 @@ void bfs_field() {
         int curStep = q.front().first;
         q.pop();
         if(curStep > R) continue;    //制限ステップ数を超えたら打ち切り
+        if(visited[cur_y][cur_x]) continue;
         visited[cur_y][cur_x] = true;
 
         REP(k,0,4){
@@ -115,7 +118,7 @@ void bfs_field() {
             //int next_y = cur_y + dy8[k];
             //int next_x = cur_y + dx8[k];
 
-            if(!CK(cur_y,0,H) || !CK(cur_x,0,W)) continue;  //範囲外
+            if(!CK(next_y,0,H) || !CK(next_x,0,W)) continue;  //範囲外
             /* ここに問題ごとの条件 */
             if(!visited[next_y][next_x]){     //未到達の座標だけpush. 
                 q.push({curStep + 1, {next_y, next_x}});
