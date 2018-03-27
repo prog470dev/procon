@@ -1,14 +1,26 @@
+#include <algorithm>
+#include <iostream>
+#include <vector>
+
+#define REP(i, a, n) for(int i=a; i<n; i++)
+
+using namespace std;
+
 /*
 行列累乗
 
-概要：正方行列のn乗を求める
+引数  ：vector<vector<int>>, vector<vector<int>>
 
-返り値：vector<vector<int>>
+返り値：vector<vector<int>>(正方行列のn乗)
 
-計算量：行またｈ列の数をmとするとＯ(log(2, n) * m^3)
+概要  ：正方行列のn乗を求める
+
+計算量：行または列の数をmとするとＯ(log(n) * m^3)
 
 */
+/*==================================================*/
 
+/*==================================================*/
 // 行列：A*B
 vector<vector<int>> mul(vector<vector<int>> A, vector<vector<int>> B) {
 	vector<vector<int>> C(A.size(), vector<int>(B[0].size()));
@@ -31,7 +43,7 @@ vector<vector<int>> mul(vector<vector<int>> A, vector<vector<int>> B) {
 	return C;
 }
 
-//行列：A^n
+// 行列：A^n
 vector<vector<int>> pow(vector<vector<int>> A, int n) {
 	vector<vector<int>> B(A.size(), vector<int>(A[0].size()));
 
@@ -50,4 +62,31 @@ vector<vector<int>> pow(vector<vector<int>> A, int n) {
 	}
 
 	return B;
+}
+
+/*==================================================*/
+
+int main() {
+	int n, m;
+	vector<vector<int>> a, b;
+	cin >> m >> n;
+
+	a.resize(m);
+	REP(i, 0, m) {
+		REP(j, 0, m) {
+			int x;
+			cin >> x;
+			a[i].push_back(x);
+		}
+	}
+
+	// m*m行列のn乗
+	b = pow(a, n);
+	REP(i, 0, b.size()) {
+		REP(j, 0, b[i].size()) {
+			cout << b[i][j] << " ";
+		}
+		cout << endl;
+	}
+	return 0;
 }
