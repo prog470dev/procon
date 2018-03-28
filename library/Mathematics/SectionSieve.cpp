@@ -16,7 +16,7 @@ using namespace std;
 
 制約  ：R<=10^12, R-L<=10^6
 
-計算量：Ｏ(nlogn)
+計算量：Ｏ((R-L)log(R-L))
 
 */
 

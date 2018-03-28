@@ -10,7 +10,7 @@ using namespace std;
 
 返り値：累乗のmod(long long型)
 
-計算量：Ｏ(log a)
+計算量：Ｏ(log b)
 
 ※modしない場合は mod に inf をいれること
 
