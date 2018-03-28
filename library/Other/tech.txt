@@ -8,14 +8,14 @@
 最小公倍数
 通分
 割り算の比較
+重複する要素の消去
 lowerbound
 upperbound
 binary_search
+next_permutation
+prev_permutation
 
-文字列の比較方法(ソート、)
 
-LIS(最長増加部分列)
-二部探索
 */
 
 
@@ -42,11 +42,17 @@ REP(i,0,str.size()){
 string str=to_string(num);
 
 ------------------------------
-//文字列一行読み込み
-//(strに読み込む)
-//(scanfでstring型は受け取れない)
-
-getline(cin,str);
+//一行読み込み
+// cinは改行コードは無視されるので
+// n　(行数)
+// "abc" <スペース>　"def"
+// ...
+// の時は困る.そのため, cin.ignore()を使う
+int n, string s;
+cin >> n;
+cin.ignore(); // 次の改行文字まで(改行文字を含めて)最大1文字読み捨てる。
+              // 1文字だと駄目な場合は cin.ignore(/*読み飛ばしたい最大文字数*/); とすれば良い。
+getline(cin, s);
 
 ------------------------------
 //切り上げ a/m
@@ -87,9 +93,23 @@ bunshi /= gcd2;
 bunbo = bunbo / gcd2;
 
 ------------------------------
-//割り算の比較
-a/b == c/d
-//→a*d == b*c
+// 割り算の比較
+// a/b == c/dは小数の誤差が出るため以下を使う
+a*d == b*c
+
+------------------------------
+// 重複する要素の削除
+// 要素が多い時はsetにいれてfindするより高速
+sort(v.begin(), v.end());
+v.erase( unique(v.begin(), v.end()), v.end() );
+
+------------------------------
+//底の変換公式
+//log(a, b) = log(x, b) / log(x, a)
+//xは何でもよい
+//log(底, 基数)
+//Mathライブラリには底がe, 2, 10の時しかない
+
 
 ------------------------------
 //lower_bound,upper_bound
@@ -107,4 +127,19 @@ ll ub = *upper_bound(vt.begin(),vt.end(),a);
 bool exist = binary_search(vt.begin(),vt.end(),a);
 
 ------------------------------
+//next_permutation, prev_permutation
+//全ての組み合わせを列挙
+//sortが必要らしい
+vector<int> v;
+sort(v.begin(), v.end());
+do{
+	//処理
+}while(next_permutation(v.begin(), v.end()));
 
+//逆順なら
+sort(v.begin(), v.end());
+do{
+	//処理
+}while(prev_permutation(v.begin(), v.end()));
+
+------------------------------
