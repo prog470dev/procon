@@ -62,3 +62,9 @@ int sum(int a, int b){
 			ret += bit[x][y];
 	return ret;
 }
+
+/*==================================================*/
+int main(){
+	
+	return 0;
+}
