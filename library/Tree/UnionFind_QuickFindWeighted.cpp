@@ -1,23 +1,10 @@
-/*
-UnionFind_QFW
-使用例：
-// 実体化 (N:ノードの最大個数)
-UnionFind uf(N);
-// アイテムixとアイテムiyが同じグループかどうか(true or false)
-uf.same(ix, iy);
-// ixの所属するグループとiyの所属するグループを同じグループに結合
-uf.merge(ix, iy);
-*/
-
-///
-
 /**
  * Union-Find
  *  - 概要
  *      - クエリに対して連結成分を作成
  * 		- ノードが持っていたアイテムについても考慮
  *  - 時間計算量
- *      - O( ?? )
+ *      - O( |V| )
 */
 
 #include <iostream>     // std::cout
@@ -70,5 +57,18 @@ struct UnionFind_QFW {
 /*==================================================*/
 int main(){
 	
+	int N;	//アイテム数
+	int items[3];	//アイテムiはグループ[i]に所属
+
+	UnionFind_QFW ufq(N);
+
+	int ix = 0,iy = 1;
+	
+	// ixの所属するグループとiyの所属するグループを同じグループに結合
+	ufq.merge(ix, iy);
+
+	// アイテムixとアイテムiyが同じグループかどうか(true or false)
+	ufq.same(ix, iy);
+
 	return 0;
 }

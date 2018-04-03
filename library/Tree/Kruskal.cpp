@@ -1,18 +1,30 @@
-/*
-クラスカル法
-O(O(|E|log|V|))
-概要：
-  辺を、コストの小さい方から見ていき、
-  両端のノードを確定済み集合に加えていく。
-使用例：
-  N: グラフのノードの数
-  M: グラフの辺の数
-  edge: < 辺のコスト, <node0, node1> >
-補足:
-  ・UnionFindが必要
-  ・最大ノード数に10^5を設定
+/**
+ * クラスカル法
+ *  - 概要
+ *      - 最小全域木とその辺の重みの合計を求める.
+ *      - 辺を、コストの小さい方から見ていき、両端のノードを確定済み集合に加えていく。
+ *  - 時間計算量
+ *      - O(|E|log|V|)
+ * - メモ
+ *      - 内部的にUnionFindを使用
 */
 
+#include <iostream>
+#include <vector>
+#include <utility>
+
+#define REP(i, a, b) for (int i = a; i < b; i++)
+
+using namespace std;
+
+/*==================================================*/
+const int NODE_SIZE = 101010;
+
+int N; //グラフのノードの数
+int M; //グラフのエッジ数
+vector<pair<int, pair<int, int>>> edge; // < 辺のコスト, <node0, node1> >
+
+/*==================================================*/
 //UnionFindの定義
 const int MAX_N = 100010;
 struct UnionFind{
@@ -49,32 +61,34 @@ struct UnionFind{
 };
 
 //ここからクラスカル方の本体
-int N, M;
-int res;
-vector< pair< int,pair<int,int> > > edge;
+int kruskal(){
+  int ret;
+  sort(edge.begin(), edge.end());
+  UnionFind uf(N);
+  ret = 0;
+  for(int i=0; i<M; i++){
+    int node0=edge[i].second.first, node1=edge[i].second.second;
+    int cost = edge[i].first;
+    if(uf.same(node0,node1)) continue;
+    uf.unite(node0,node1);
+    ret += cost;
+  }
 
-//入力処理
-cin>>N>>M;
-REP(i,0,M){
-int a,b,c;
-cin>>a>>b>>c;
-  edge.push_back(make_pair(c,make_pair(a,b)));
-}
-
-sort(edge.begin(), edge.end());
-UnionFind uf(N);
-
-res = 0;
-REP(i,0,M){
-  int node0=edge[i].S.F, node1=edge[i].S.S;
-  int cost = edge[i].F;
-  if(uf.same(node0,node1)) continue;
-  uf.unite(node0,node1);
-  res += cost;
+  return ret;
 }
 
 /*==================================================*/
 int main(){
-	
+
+  //グラフ作成
+  cin>>N>>M;
+  for(int i=0; i<M; i++){
+    int a,b,c;
+    cin>>a>>b>>c;
+    edge.push_back(make_pair(c,make_pair(a,b)));
+  }
+
+  int ans = kruskal();
+    
 	return 0;
 }
