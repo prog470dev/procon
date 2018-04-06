@@ -1,14 +1,14 @@
 /**
- * Union-Find
+ * Union-Find-QFW
  *  - 概要
  *      - クエリに対して連結成分を作成
  * 		- ノードが持っていたアイテムについても考慮
  *  - 時間計算量
- *      - O( |V| )
+ *      - O( log|V|以下 )
 */
 
-#include <iostream>     // std::cout
-#include <algorithm>    // std::fill
+#include <iostream>    
+#include <algorithm> 
 #include <vector>
 
 using namespace std;
@@ -16,7 +16,7 @@ using namespace std;
 /*==================================================*/
 struct UnionFind_QFW {
 	vector<int> i2g;  // i2g[i]:アイテムiの所属するグループの番号
-	/* アイテムの種類を変えたいときは↓を変更 */
+	/* アイテムの種類を変えたいときは下を変更 */
 	vector<vector<int>> g2i; // g2i[g]:グループgに所属するアイテムたち
 
 	UnionFind_QFW(int n) {
@@ -62,11 +62,10 @@ int main(){
 
 	UnionFind_QFW ufq(N);
 
-	int ix = 0,iy = 1;
+	int ix = 0, iy = 1;
 	
 	// ixの所属するグループとiyの所属するグループを同じグループに結合
 	ufq.merge(ix, iy);
-
 	// アイテムixとアイテムiyが同じグループかどうか(true or false)
 	ufq.same(ix, iy);
 

@@ -29,7 +29,7 @@ int edge[NODE_SIZE][NODE_SIZE]; //ノードaとbの距離 (繋がっていなけ
 
 
 int prim(){
-  bool used[1000];  //すでに確定済み集合に入っているか
+  bool used[NODE_SIZE];  //すでに確定済み集合に入っているか
   int ret;          //最小全域木の辺のコストの総和
   priority_queue<pair<int, int> > PQ; //<コスト, 行き先ノード>
 
