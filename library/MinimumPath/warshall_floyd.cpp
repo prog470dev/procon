@@ -1,5 +1,7 @@
 /**
  * ワーシャル・フロイド法
+ *  - 概要
+ *      - 任意の２点間の距離を計算 
  *  - 時間計算量
  *      - O( |V|^3 )
  *  - 探索対象
@@ -9,8 +11,6 @@
 */
 
 #include <iostream>
-#include <vector>
-#include <queue>
 
 #define REP(i, a, b) for (int i = a; i < b; i++)
 

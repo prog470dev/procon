@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include <algorithm>
 #include <iostream>
 
@@ -39,7 +38,7 @@ long long combination(int n, int r) {
 // DP版
 void combinationDP(int n) {
 	for (int i = 0; i < n + 1; i++) {
-		for (int j = 0; j < n + 1; j++) {
+		for (int j = 0; j < i + 1; j++) {
 			if (j == 0 || i == j) comb[i][j] = 1;
 			else comb[i][j] = comb[i - 1][j - 1] + comb[i - 1][j];
 		}
@@ -58,6 +57,13 @@ int main() {
 	// DP版
 	combinationDP(n);
 	cout << n << "C" << r << " = " << comb[n][r] << endl;
+
+	for(int i=0; i<n+1; i++){
+		for(int j=0; j<i+1; j++){
+			cout<<comb[i][j]<<" ";
+		}
+		cout<<endl;
+	}
 
 	return 0;
 }

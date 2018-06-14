@@ -1,51 +1,73 @@
-/*
-UnionFind_QFW
-g—p—áF
-// À‘Ì‰» (N:ƒm[ƒh‚ÌÅ‘åŒÂ”)
-UnionFind uf(N);
-
-// ƒAƒCƒeƒ€ix‚ÆƒAƒCƒeƒ€iy‚ª“¯‚¶ƒOƒ‹[ƒv‚©‚Ç‚¤‚©(true or false)
-uf.same(ix, iy);
-
-// ix‚ÌŠ‘®‚·‚éƒOƒ‹[ƒv‚Æiy‚ÌŠ‘®‚·‚éƒOƒ‹[ƒv‚ğ“¯‚¶ƒOƒ‹[ƒv‚ÉŒ‹‡
-uf.merge(ix, iy);
+/**
+ * Union-Find-QFW
+ *  - æ¦‚è¦
+ *      - ã‚¯ã‚¨ãƒªã«å¯¾ã—ã¦é€£çµæˆåˆ†ã‚’ä½œæˆ
+ * 		- ãƒãƒ¼ãƒ‰ãŒæŒã£ã¦ã„ãŸã‚¢ã‚¤ãƒ†ãƒ ã«ã¤ã„ã¦ã‚‚è€ƒæ…®
+ *  - æ™‚é–“è¨ˆç®—é‡
+ *      - O( log|V|ä»¥ä¸‹ )
 */
+
+#include <iostream>    
+#include <algorithm> 
+#include <vector>
+
+using namespace std;
+
+/*==================================================*/
 struct UnionFind_QFW {
-	vector<int> i2g;         // i2g[i]:ƒAƒCƒeƒ€i‚ÌŠ‘®‚·‚éƒOƒ‹[ƒv‚Ì”Ô†
-	/* ƒAƒCƒeƒ€‚Ìí—Ş‚ğ•Ï‚¦‚½‚¢‚Æ‚«‚Í«‚ğ•ÏX */
-	vector<vector<int>> g2i; // g2i[g]:ƒOƒ‹[ƒvg‚ÉŠ‘®‚·‚éƒAƒCƒeƒ€‚½‚¿
+	vector<int> i2g;  // i2g[i]:ã‚¢ã‚¤ãƒ†ãƒ iã®æ‰€å±ã™ã‚‹ã‚°ãƒ«ãƒ¼ãƒ—ã®ç•ªå·
+	/* ã‚¢ã‚¤ãƒ†ãƒ ã®ç¨®é¡ã‚’å¤‰ãˆãŸã„ã¨ãã¯ä¸‹ã‚’å¤‰æ›´ */
+	vector<vector<int>> g2i; // g2i[g]:ã‚°ãƒ«ãƒ¼ãƒ—gã«æ‰€å±ã™ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ãŸã¡
 
 	UnionFind_QFW(int n) {
 		i2g.resize(n);
 		g2i.resize(n);
 		for (int i = 0; i < n; i++) {
 			i2g[i] = i;
-			g2i[i].assign(1, i); // ƒAƒCƒeƒ€i‚ğ‚P‚ÂŠ„‚è“–‚Ä‚é
+			g2i[i].assign(1, i); // ã‚¢ã‚¤ãƒ†ãƒ iã‚’ï¼‘ã¤å‰²ã‚Šå½“ã¦ã‚‹
 		}
 	}
 
-	// “¯‚¶ƒOƒ‹[ƒv‚ÉŠ‘®‚µ‚Ä‚¢‚é‚©
+	// åŒã˜ã‚°ãƒ«ãƒ¼ãƒ—ã«æ‰€å±ã—ã¦ã„ã‚‹ã‹
 	bool same(int ix, int iy) {
 		return i2g[ix] == i2g[iy];
 	}
 
-	// x‚ÌŠ‘®‚·‚éƒOƒ‹[ƒv‚Æy‚ÌŠ‘®‚·‚éƒOƒ‹[ƒv‚ğŒ‹‡
+	// xã®æ‰€å±ã™ã‚‹ã‚°ãƒ«ãƒ¼ãƒ—ã¨yã®æ‰€å±ã™ã‚‹ã‚°ãƒ«ãƒ¼ãƒ—ã‚’çµåˆ
 	void merge(int ix, int iy) {
-		if (same(ix, iy)) return; // “¯‚¶ƒOƒ‹[ƒv‚È‚ç‰½‚à‚µ‚È‚¢
+		if (same(ix, iy)) return; // åŒã˜ã‚°ãƒ«ãƒ¼ãƒ—ãªã‚‰ä½•ã‚‚ã—ãªã„
 
-		// ƒOƒ‹[ƒvx‚ÌƒAƒCƒeƒ€” > ƒOƒ‹[ƒvy‚ÌƒAƒCƒeƒ€”  ‚Æ‚È‚é‚æ‚¤‚É(¦ ˆê”Ê“I‚Èƒ}[ƒWƒeƒN)
+		// ã‚°ãƒ«ãƒ¼ãƒ—xã®ã‚¢ã‚¤ãƒ†ãƒ æ•° > ã‚°ãƒ«ãƒ¼ãƒ—yã®ã‚¢ã‚¤ãƒ†ãƒ æ•°  ã¨ãªã‚‹ã‚ˆã†ã«(â€» ä¸€èˆ¬çš„ãªãƒãƒ¼ã‚¸ãƒ†ã‚¯)
 		if (g2i[i2g[ix]].size() < g2i[i2g[iy]].size()) {
 			swap(ix, iy);
 		}
 
-		// gx‚Ì—v‘f” > gy‚Ì—v‘f”
+		// gxã®è¦ç´ æ•° > gyã®è¦ç´ æ•°
 		int gx = i2g[ix];
 		int gy = i2g[iy];
 		for (int j : g2i[gy]) {
 			i2g[j] = gx;
 		}
 
-		g2i[gx].insert(g2i[gx].end(), g2i[gy].begin(), g2i[gy].end()); // ƒOƒ‹[ƒv‚ÌŒ‹‡
+		g2i[gx].insert(g2i[gx].end(), g2i[gy].begin(), g2i[gy].end()); // ã‚°ãƒ«ãƒ¼ãƒ—ã®çµåˆ
 		g2i[gy].clear();
 	}
 };
+
+/*==================================================*/
+int main(){
+	
+	int N;	//ã‚¢ã‚¤ãƒ†ãƒ æ•°
+	int items[3];	//ã‚¢ã‚¤ãƒ†ãƒ iã¯ã‚°ãƒ«ãƒ¼ãƒ—[i]ã«æ‰€å±
+
+	UnionFind_QFW ufq(N);
+
+	int ix = 0, iy = 1;
+	
+	// ixã®æ‰€å±ã™ã‚‹ã‚°ãƒ«ãƒ¼ãƒ—ã¨iyã®æ‰€å±ã™ã‚‹ã‚°ãƒ«ãƒ¼ãƒ—ã‚’åŒã˜ã‚°ãƒ«ãƒ¼ãƒ—ã«çµåˆ
+	ufq.merge(ix, iy);
+	// ã‚¢ã‚¤ãƒ†ãƒ ixã¨ã‚¢ã‚¤ãƒ†ãƒ iyãŒåŒã˜ã‚°ãƒ«ãƒ¼ãƒ—ã‹ã©ã†ã‹(true or false)
+	ufq.same(ix, iy);
+
+	return 0;
+}
