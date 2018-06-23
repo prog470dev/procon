@@ -19,40 +19,42 @@
 
 using namespace std;
 
-const int INF = 1e9;
-const int NODE_SIZE = 10101;
+const ll LLINF = 1e18;
+const ll NODE_SIZE = 10101;
 
-int N;  //グラフのノードの数
-int M;  //グラフの辺の数
-vector<pair<int, int>> edge[NODE_SIZE];   //<ノード, 距離>
-int d[NODE_SIZE];   //始点ノードからノードiへの最短距離
-int start;  //開始ノード番号
+ll N;  //グラフのノードの数
+ll M;  //グラフの辺の数
+vector<pair<ll, ll>> edge[NODE_SIZE];   //<ノード, 距離>
+ll d[NODE_SIZE];   //始点ノードからノードiへの最短距離
+ll start;  //開始ノード番号
 
 /*==================================================*/
 
 //ダイクストラ法
 void dijkstra() {
-    priority_queue< pair<int, int> > PQ;  //<(-1)*最短距離, ノード番号>
-    
+    priority_queue< pair<ll, ll> > PQ;  //<(-1)*最短距離, ノード番号>
+
+    REP(i,0,N) d[i] = LLINF;
+    d[start] = 0;
     PQ.push(make_pair(0,start));  //開始ノードを0とする。
 
     while(!PQ.empty()){
-        int curCost = -PQ.top().first;
-        int curNode = PQ.top().second;
+        ll curCost = -PQ.top().first;
+        ll curNode = PQ.top().second;
         PQ.pop();
 
-        if(d[curNode] <= curCost) continue;
+        if(d[curNode] < curCost) continue;
         d[curNode] = curCost;
-        
+
         REP(i,0,edge[curNode].size()){
-            int nextNode = edge[curNode][i].first;
-            int addCost = edge[curNode][i].second;
+            ll nextNode = edge[curNode][i].first;
+            ll addCost = edge[curNode][i].second;
 
             if(d[nextNode] > d[curNode] + addCost){
                 d[nextNode] = d[curNode] + addCost;
                 PQ.push(make_pair(-d[nextNode], nextNode));
             }
-        }  
+        }
     }
 }
 
@@ -61,9 +63,8 @@ void dijkstra() {
 int maint(){
 
     //ここでグラフの生成
-    REP(i,0,N) d[i] = INF;
-    start = 0;
-    dijkstra();
+    start = 0;  //開始ノードを設定
+    dijkstra(); //実行後:d[i]にstartからiへの最短距離
 
     return 0;
 }
