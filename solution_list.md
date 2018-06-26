@@ -162,7 +162,7 @@
 
 ## 組み合わせのmod
 
-* DP
+* [DP](#DP)
 * フェルマーの小定理(O(10^5))
 * 式で一発(制約でわかる)
 
@@ -170,7 +170,7 @@
 
 ## ある数以下(または範囲)で条件を満たすものの個数or最大最小
 
-* [桁DP](#桁DP)
+* [桁DP](#DP)
 
   
 
@@ -253,7 +253,15 @@
 
     → [尺取り法](#尺取り)が使える.
 
+## n bitのうち, k bit 立っている数の個数とその総和
 
+- [組み合わせ](#組み合わせ) 
+
+- k bit立っている数の個数はnCk, 
+
+- k bit立っている数の総和は
+
+  (2^n-1) * n-1C(k-1)
 
 ## あみだくじ
 
@@ -265,6 +273,8 @@
 
 # 手法
 ## ダイクストラ
+- [ライブラリ](https://github.com/prog470dev/procon/blob/master/library/MinimumPath/dijkstra.cpp) 
+
 - 状態をまとめる (DPっぽさ)
 
 - 負のコストがあると使えない
@@ -273,11 +283,14 @@
 
 ## ワーシャルフロイド
 
+* [ライブラリ](https://github.com/prog470dev/procon/blob/master/library/MinimumPath/warshall_floyd.cpp) 
 * 複数回回す(いらないノードやエッジを消してもう一回)
 
 
 
 ## 幅優先探索(bfs)
+
+* [ライブラリ](https://github.com/prog470dev/procon/blob/master/library/Explore/bfs.cpp) 
 
 * 前処理できるならする. (エッジの種類を変える, 状態を削減する)
 
@@ -332,9 +345,17 @@
 
 
 ## 座圧
-- ２次元累積和
+- [ライブラリ](https://github.com/prog470dev/procon/blob/master/library/ProconTech/compress.cpp) 
+- [２次元累積和](#累積和) 
 - 手順: ソート, 重複削除
 - もとの値を参照: unzipして[二分探索](#二分探索)
+
+
+
+## 累積和
+
+- [ライブラリ](https://github.com/prog470dev/procon/blob/master/library/ProconTech/CumulativeSum.cpp) 
+- 範囲内の重なっている数を数える
 
 
 
@@ -344,27 +365,31 @@
 - 配列サイズに余裕がある
     * 抽象化に漏れが無いか考える (インデックス[状態の要素]の追加)
 - bitDP
-    - [ライブラリ](#https://github.com/prog470dev/procon/blob/master/library/DP/bitDP.cpp)
+    - [ライブラリ](https://github.com/prog470dev/procon/blob/master/library/DP/bitDP.cpp)
     - 2つのbitを同時に立てる時もある(ペアを作る時など)
 - 木DP
     - 木構造で最大最小を求めるときに使う
     - ただのメモ化再帰
     - dfsの中でdpして最大を求めたりする. 頑張って一般化する
 - 区間DP
-    - ライブラリ
+    - [ライブラリ](https://github.com/prog470dev/procon/blob/master/library/DP/rangeDP.cpp) 
     - dp\[L]\[R] := 区間[L.R]についての何か
     - 区間の小さい方から大きい方に回す
     - dp\[L]\[R] を　dp\[L+1]\[R-1]やdp\[L+1]\[R] + dp\[L]\[R-1]で更新する
     - 区間の区切り目で回すことを忘れない
     - 累積和との相性◎
 - 桁DP
-    - [ライブラリ](#https://github.com/prog470dev/procon/blob/master/library/DP/digitDP.cpp)
+    - [ライブラリ](https://github.com/prog470dev/procon/blob/master/library/DP/digitDP.cpp) 
     - ある数以下で条件を満たすものの個数とか最大が得意
     - A~Bまでの区間で求めたいときはB以下からA-1以下を引けば答え
     - 0~9が出るor出ないを管理するときとかに使える
     - 倍数との相性◎(mod で考える) 
 
+
+
 ## 再帰
+
+* [ライブラリ](https://github.com/prog470dev/procon/blob/master/library/Explore/dfs.cpp)
 
 * メモ化はしとこう! (特に実行時間が長かったら)
 
@@ -380,6 +405,7 @@
 
 ## 二分探索
 
+* [ライブラリ](https://github.com/prog470dev/procon/blob/master/library/Explore/nibutan.cpp) 
 * 片半区間でまわすとバグらない!
 * 答えそのものを二分探索する
 
@@ -387,14 +413,16 @@
 
 ## 尺取り
 
+* [ライブラリ](https://github.com/prog470dev/procon/blob/master/library/ProconTech/shakutori.cpp) 
 * 区間で条件を満たすものの数え挙げ
-
 * 左を固定して右はそれ以上考えなくても良いという条件を考える
 
 
 
 
 ## 半分全列挙
+
+* [ライブラリ](https://github.com/prog470dev/procon/blob/master/library/ProconTech/half_full_enumeration.cpp) 
 
 * O(2^(n/2))
 
@@ -408,15 +436,25 @@
 
 * 条件は2つ
 
-  * すべてのノードが連結(UnionFind)
-
+  * すべてのノードが連結([UnionFind](#UnionFind))
   * 次数(ノードについてるエッジの数)が奇数の頂点の個数が0個か2個
 
-    
 
-## n bitのうち, k bit 立っている数の個数とその総和
 
-* k bit立っている数の個数はnCk, 
+## UnionFind
+
+- [ライブラリ](https://github.com/prog470dev/procon/blob/master/library/Tree/UnionFind.cpp) 
+- [ライブラリ(グループ版)](https://github.com/prog470dev/procon/blob/master/library/Tree/UnionFind_QuickFindWeighted.cpp) 
+- クエリに対して連結成分を作成
+- O(log|V|)
+
+
+
+## 組み合わせ
+
+* [ライブラリ](https://github.com/prog470dev/procon/blob/master/library/Mathematics/combination.cpp)
+
+* nCr ： n個の中からr個選ぶときの組み合わせ数
 
 * k bit立っている数の総和は
 
@@ -502,11 +540,14 @@ C = y /100
 
 # データ構造　
 
-忘れた使い方あったら[ここ](https://www.qoosky.io/techs/5cd1a59497)がよい
+- [ライブラリ](https://github.com/prog470dev/procon/blob/master/library/Other/original_struct.cpp) 
+- 忘れた使い方あったら[ここ](https://www.qoosky.io/techs/5cd1a59497)がよい
 
 
 
 ## bit操作
+
+- #### [ライブラリ](https://github.com/prog470dev/procon/blob/master/library/Other/Technique_bit.txt) 
 
 - #### 立っているbit数を数える(1000なら1)　 __builtin_popcountll
 
@@ -561,6 +602,10 @@ C = y /100
 
 
 ## string
+
+* [ライブラリ](https://github.com/prog470dev/procon/blob/master/library/Other/string_memo.txt)
+
+
 
 * 1行読み込み cin.ignore(); getline(cin,s)   (cin.ignore()は1回のみ呼び出せば良い)
 
