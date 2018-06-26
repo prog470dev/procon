@@ -1,92 +1,60 @@
-#include <algorithm>
+/*
+ * 行列累乗 O(log N)
+ * 行列のべき乗を繰り返し二乗法で求める
+ *
+ * mat が二次元vector
+ */
+
+// フィボナッチの例
 #include <iostream>
 #include <vector>
-
-#define REP(i, a, n) for(int i=a; i<n; i++)
-
+#define REP(i,n,N) for(ll i=(n); i<(N); i++)
+typedef long long ll;
 using namespace std;
+const ll mod=1e9+7;
 
-/*
-行列累乗
+typedef vector<ll> vec;
+typedef vector<vec> mat;
 
-引数  ：vector<vector<int>>, vector<vector<int>>
+ll n;
+//H = 行列の縦, W = 行列の横
+ll H, W;
 
-返り値：vector<vector<int>>(正方行列のn乗)
-
-概要  ：正方行列のn乗を求める
-
-計算量：行または列の数をmとするとＯ(log(n) * m^3)
-
-*/
-/*==================================================*/
-
-/*==================================================*/
-// 行列：A*B
-vector<vector<int>> mul(vector<vector<int>> A, vector<vector<int>> B) {
-	vector<vector<int>> C(A.size(), vector<int>(B[0].size()));
-
-	// 初期化
-	for (int i = 0; i < C.size(); i++) {
-		for (int j = 0; j < C[0].size(); j++) {
-			C[i][j] = 0;
-		}
-	}
-
-	// 行列C = A * Bの計算
-	for (int i = 0; i < A.size(); i++) {
-		for (int k = 0; k < B.size(); k++) {
-			for (int j = 0; j < B[0].size(); j++) {
-				C[i][j] = C[i][j] + A[i][k] * B[k][j];
-			}
-		}
-	}
-	return C;
+//A*B
+mat mul(mat &A, mat &B){
+    mat C(A.size(), vec(B[0].size(),0));
+    REP(i, 0, A.size())
+    REP(k, 0, B.size())
+    REP(j, 0, B[0].size())
+    C[i][j] = (C[i][j] + A[i][k] * B[k][j]) % mod;
+    return C;
 }
 
-// 行列：A^n
-vector<vector<int>> pow(vector<vector<int>> A, int n) {
-	vector<vector<int>> B(A.size(), vector<int>(A[0].size()));
-
-	// 初期化
-	for (int i = 0; i < A.size(); i++) {
-		for (int j = 0; j < A[i].size(); j++) {
-			if (i == j) B[i][j] = 1;
-			else B[i][j] = 0;
-		}
-	}
-	// 行列B = A^nの計算
-	while (n > 0) {
-		if (n & 1) B = mul(B, A);
-		A = mul(A, A);
-		n >>= 1;
-	}
-
-	return B;
+//A^n
+mat mat_pow(mat A, long long n){
+    mat B(A.size(), vec(A.size(), 1));
+    //REP(i, 0, A.size()) B[i][i] = 1;
+    while(n > 0){
+        if(n & 1) B = mul(B, A);
+        A = mul(A, A);
+        n >>= 1;
+    }
+    return B;
 }
 
-/*==================================================*/
+int main(){
+    cin>>H>>W;
+    mat A(H, vec(W,0));//行列の 縦 x 横
 
-int main() {
-	int n, m;
-	vector<vector<int>> a, b;
-	cin >> m >> n;
+    //ここで定式化した行列を代入する
+    A[0][0] = A[1][0] = A[0][1] = 1;
+    A[1][1] = 0;
 
-	a.resize(m);
-	REP(i, 0, m) {
-		REP(j, 0, m) {
-			int x;
-			cin >> x;
-			a[i].push_back(x);
-		}
-	}
+    ll n = 10;
+    A = mat_pow(A, n-2); //繰り返し二乗法
+    mat B(H, vec(1,0));
 
-	// m*m行列のn乗
-	b = pow(a, n);
-	REP(i, 0, b.size()) {
-		REP(j, 0, b[i].size()) {
-			cout << b[i][j] << " ";
-		}
-		cout << endl;
-	}
-	return 0;
+    B[0][0] = 1, B[1][0] = 0;
+    mat ans = mul(A, B);
+    cout<<ans[0][0]<<endl;
 }
